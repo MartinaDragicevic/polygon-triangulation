@@ -1,4 +1,6 @@
 module Main (main) where
 
+import Triangulation
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = print (triangulateConvex ([1, 2, 3, 4, 5] :: [Int]))
