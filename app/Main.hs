@@ -1,6 +1,10 @@
 module Main (main) where
 
-import Types
+import PolygonGenerator
+import System.Random (mkStdGen)
 
 main :: IO ()
-main = print (Point 13 68)
+main = do
+    let generator = mkStdGen 42
+    let (points, _) = generatePoints 5 (0, 100) generator
+    print points
