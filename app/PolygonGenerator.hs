@@ -15,3 +15,13 @@ generatePoints n range gen =
     let (point, gen1) = generatePoint range gen
         (points, gen2) = generatePoints (n - 1) range gen1
     in (point : points, gen2)
+
+generateUniquePoints :: Int -> (Int, Int) -> StdGen -> ([Point], StdGen)
+generateUniquePoints count range gen = generate count [] gen
+  where
+    generate 0 points currentGen = (reverse points, currentGen)
+    generate remaining points currentGen =
+        let (point, nextGen) = generatePoint range currentGen
+        in if point `elem` points
+            then generate remaining points nextGen
+            else generate (remaining - 1) (point : points) nextGen
