@@ -61,6 +61,8 @@ executable polygon-triangulation
     other-modules:
         Types
         PolygonGenerator
+        Triangulation
+
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
