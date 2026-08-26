@@ -1,12 +1,24 @@
 module Main (main) where
 
-import PolygonGenerator
-import System.Random (mkStdGen)
-import Triangulation
+import Geometry
+import Types
 
 main :: IO ()
 main = do
-    let generator = mkStdGen 42
-    let (points, _) = generateUniquePoints 10 (0, 100) generator
-    print points
-    print (triangulateConvex ([1, 2, 3, 4, 5] :: [Int]))
+    let convexPolygon =
+            [ Point 0 0
+            , Point 4 0
+            , Point 4 4
+            , Point 0 4
+            ]
+
+    let nonConvexPolygon =
+            [ Point 0 0
+            , Point 4 0
+            , Point 2 2
+            , Point 4 4
+            , Point 0 4
+            ]
+
+    print (isConvex convexPolygon)
+    print (isConvex nonConvexPolygon)
