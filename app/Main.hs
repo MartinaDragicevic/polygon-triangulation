@@ -5,20 +5,15 @@ import Types
 
 main :: IO ()
 main = do
-    let convexPolygon =
-            [ Point 0 0
-            , Point 4 0
-            , Point 4 4
-            , Point 0 4
-            ]
+    let a = Point 0 0
+        b = Point 4 4
+        c = Point 0 4
+        d = Point 4 0
 
-    let nonConvexPolygon =
-            [ Point 0 0
-            , Point 4 0
-            , Point 2 2
-            , Point 4 4
-            , Point 0 4
-            ]
+    let e = Point 0 0
+        f = Point 4 0
+        g = Point 0 2
+        h = Point 4 2
 
-    print (isConvex convexPolygon)
-    print (isConvex nonConvexPolygon)
+    print (segmentsIntersect a b c d)
+    print (segmentsIntersect e f g h)

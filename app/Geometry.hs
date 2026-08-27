@@ -15,3 +15,13 @@ isConvex polygon
     extended = polygon ++ take 2 polygon
     allTurns = zipWith3 orientation extended (drop 1 extended) (drop 2 extended)
     turns = filter (/= 0) allTurns
+
+segmentsIntersect :: Point -> Point -> Point -> Point -> Bool
+segmentsIntersect p1 p2 p3 p4 =
+    let o1 = orientation p1 p2 p3
+        o2 = orientation p1 p2 p4
+        o3 = orientation p3 p4 p1
+        o4 = orientation p3 p4 p2
+    in oppositeSigns o1 o2 && oppositeSigns o3 o4
+  where
+    oppositeSigns a b = (a > 0 && b < 0) || (a < 0 && b > 0)
