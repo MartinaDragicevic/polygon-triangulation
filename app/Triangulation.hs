@@ -35,3 +35,28 @@ isEar previous current next polygon =
     otherPoints =
         filter (\point -> point /= previous && point /= current && point /= next) polygon
     insideTriangle point = pointInTriangle point triangle
+
+cyclicTriples :: [Point] -> [(Point, Point, Point)]
+cyclicTriples (first : second : third : rest) =
+    (lastPoint, first, second) : build first second (third : rest)
+  where
+    lastPoint = findLast third rest
+
+    findLast current [] = current
+    findLast _ (next : remaining) = findLast next remaining
+
+    build previous current [] =
+        [(previous, current, first)]
+    build previous current (next : remaining) =
+        (previous, current, next) : build current next remaining
+
+cyclicTriples _ = []
+
+findEar :: [Point] -> Maybe (Point, Triangle)
+findEar polygon = search (cyclicTriples polygon)
+  where
+    search [] = Nothing
+    search ((previous, current, next) : rest)
+        | isEar previous current next polygon =
+            Just (current, (previous, current, next))
+        | otherwise = search rest
