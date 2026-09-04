@@ -5,11 +5,8 @@ import Types
 
 main :: IO ()
 main = do
-    let triangle =
-            ( Point 0 0
-            , Point 6 0
-            , Point 3 6
-            )
+    let polygon = [Point 0 0, Point 4 0, Point 4 4, Point 0 4]
+        nonConvexPolygon = [Point 0 0, Point 4 0, Point 2 2, Point 4 4, Point 0 4]
 
-    print (pointInTriangle (Point 3 2) triangle)
-    print (pointInTriangle (Point 7 2) triangle)
+    print (isEar (Point 0 0) (Point 4 0) (Point 4 4) polygon)
+    print (isEar (Point 4 0) (Point 2 2) (Point 4 4) nonConvexPolygon)

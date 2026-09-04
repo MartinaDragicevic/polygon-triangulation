@@ -23,7 +23,15 @@ pointInTriangle point (a, b, c) =
     let o1 = orientation a b point
         o2 = orientation b c point
         o3 = orientation c a point
-
         hasNegative = o1 < 0 || o2 < 0 || o3 < 0
         hasPositive = o1 > 0 || o2 > 0 || o3 > 0
     in not (hasNegative && hasPositive)
+
+isEar :: Point -> Point -> Point -> [Point] -> Bool
+isEar previous current next polygon =
+    orientation previous current next > 0 && not (any insideTriangle otherPoints)
+  where
+    triangle = (previous, current, next)
+    otherPoints =
+        filter (\point -> point /= previous && point /= current && point /= next) polygon
+    insideTriangle point = pointInTriangle point triangle
