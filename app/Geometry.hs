@@ -28,7 +28,8 @@ segmentsIntersect p1 p2 p3 p4 =
 
 polygonEdges :: Polygon -> [(Point, Point)]
 polygonEdges [] = []
-polygonEdges points = zip points (tail points ++ [head points])
+polygonEdges (first : rest) =
+    zip (first : rest) (rest ++ [first])
 
 isSimplePolygon :: Polygon -> Bool
 isSimplePolygon polygon
