@@ -1,12 +1,13 @@
 module Main (main) where
 
 import Geometry
-import Types
+import PolygonGenerator
+import System.Random (mkStdGen)
 
 main :: IO ()
 main = do
-    let simplePolygon = [Point 0 0, Point 4 0, Point 4 4, Point 0 4]
-        selfIntersectingPolygon = [Point 0 0, Point 4 4, Point 0 4, Point 4 0]
+    let generator = mkStdGen 42
+        (polygon, _) = generateSimplePolygon 10 (0, 100) generator
 
-    print (isSimplePolygon simplePolygon)
-    print (isSimplePolygon selfIntersectingPolygon)
+    print polygon
+    print (isSimplePolygon polygon)
