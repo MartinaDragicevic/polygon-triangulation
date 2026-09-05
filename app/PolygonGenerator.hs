@@ -32,10 +32,16 @@ orderPoints :: [Point] -> Polygon
 orderPoints [] = []
 orderPoints points = sortOn angle points
   where
+    count :: Double
     count = fromIntegral (length points)
+
+    centerX :: Double
     centerX = fromIntegral (sum [x | Point x _ <- points]) / count
+
+    centerY :: Double
     centerY = fromIntegral (sum [y | Point _ y <- points]) / count
 
+    angle :: Point -> Double
     angle (Point x y) =
         atan2 (fromIntegral y - centerY) (fromIntegral x - centerX)
 
