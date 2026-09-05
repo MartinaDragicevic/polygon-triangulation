@@ -19,8 +19,15 @@ generatePoints n range gen =
     in (point : points, gen2)
 
 generateUniquePoints :: Int -> (Int, Int) -> StdGen -> ([Point], StdGen)
-generateUniquePoints count range gen = generate count [] gen
+generateUniquePoints count range@(minValue, maxValue) gen
+    | count <= 0 = ([], gen)
+    | minValue > maxValue = ([], gen)
+    | count > availablePoints = ([], gen)
+    | otherwise = generate count [] gen
   where
+    sideLength = maxValue - minValue + 1
+    availablePoints = sideLength * sideLength
+
     generate 0 points currentGen = (reverse points, currentGen)
     generate remaining points currentGen =
         let (point, nextGen) = generatePoint range currentGen
