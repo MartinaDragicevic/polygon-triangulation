@@ -1,8 +1,9 @@
 module PolygonGenerator where
 
 import Data.List (sortOn)
+import Geometry (isConvex, isSimplePolygon)
 import System.Random (StdGen, uniformR)
-import Types (Point(..), Polygon)
+import Types (Point(..), Polygon, PolygonType(..))
 
 generatePoint :: (Int, Int) -> StdGen -> (Point, StdGen)
 generatePoint range gen =
@@ -49,3 +50,14 @@ generateSimplePolygon :: Int -> (Int, Int) -> StdGen -> (Polygon, StdGen)
 generateSimplePolygon count range gen =
     let (points, nextGen) = generateUniquePoints count range gen
     in (orderPoints points, nextGen)
+
+generatePolygon :: PolygonType -> Int -> (Int, Int) -> StdGen -> (Polygon, StdGen)
+generatePolygon polygonType count range gen =
+    let (polygon, nextGen) = generateSimplePolygon count range gen
+    in if isSimplePolygon polygon && matchesType polygonType polygon
+        then (polygon, nextGen)
+        else generatePolygon polygonType count range nextGen
+
+matchesType :: PolygonType -> Polygon -> Bool
+matchesType Convex = isConvex
+matchesType NonConvex = not . isConvex
