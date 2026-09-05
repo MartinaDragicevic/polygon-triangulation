@@ -60,3 +60,21 @@ findEar polygon = search (cyclicTriples polygon)
         | isEar previous current next polygon =
             Just (current, (previous, current, next))
         | otherwise = search rest
+
+removePoint :: Point -> [Point] -> [Point]
+removePoint _ [] = []
+removePoint point (current : rest)
+    | point == current = rest
+    | otherwise = current : removePoint point rest
+
+triangulatePolygon :: [Point] -> Maybe [Triangle]
+triangulatePolygon [a, b, c] = Just [(a, b, c)]
+triangulatePolygon polygon
+    | length polygon < 3 = Nothing
+    | otherwise =
+        case findEar polygon of
+            Nothing -> Nothing
+            Just (earPoint, triangle) ->
+                case triangulatePolygon (removePoint earPoint polygon) of
+                    Nothing -> Nothing
+                    Just triangles -> Just (triangle : triangles)
