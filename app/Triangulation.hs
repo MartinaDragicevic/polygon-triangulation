@@ -66,13 +66,29 @@ removePoint point (current : rest)
     | otherwise = current : removePoint point rest
 
 triangulatePolygon :: [Point] -> Maybe [Triangle]
-triangulatePolygon [a, b, c] = Just [(a, b, c)]
-triangulatePolygon polygon
-    | length polygon < 3 = Nothing
-    | otherwise =
-        case findEar polygon of
-            Nothing -> Nothing
-            Just (earPoint, triangle) ->
-                case triangulatePolygon (removePoint earPoint polygon) of
-                    Nothing -> Nothing
-                    Just triangles -> Just (triangle : triangles)
+triangulatePolygon polygon =
+    triangulateCCW (ensureCounterClockwise polygon)
+  where
+    triangulateCCW [a, b, c] = Just [(a, b, c)]
+    triangulateCCW points
+        | length points < 3 = Nothing
+        | otherwise =
+            case findEar points of
+                Nothing -> Nothing
+                Just (earPoint, triangle) ->
+                    case triangulateCCW (removePoint earPoint points) of
+                        Nothing -> Nothing
+                        Just triangles -> Just (triangle : triangles)
+
+signedArea2 :: [Point] -> Int
+signedArea2 [] = 0
+signedArea2 (first : rest) =
+    sum (zipWith crossProduct (first : rest) (rest ++ [first]))
+  where
+    crossProduct (Point x1 y1) (Point x2 y2) =
+        x1 * y2 - x2 * y1
+
+ensureCounterClockwise :: [Point] -> [Point]
+ensureCounterClockwise polygon
+    | signedArea2 polygon < 0 = reverse polygon
+    | otherwise = polygon
