@@ -1,5 +1,6 @@
 module Triangulation where
 
+import Geometry (orientation)
 import Types (Point(..))
 
 type Triangle = (Point, Point, Point)
@@ -14,9 +15,6 @@ triangulateConvex (first : second : third : rest) =
 
 triangulateConvex _ = []
 
-orientation :: Point -> Point -> Point -> Int
-orientation (Point ax ay) (Point bx by) (Point cx cy) =
-    (bx - ax) * (cy - ay) - (by - ay) * (cx - ax)
 
 pointInTriangle :: Point -> Triangle -> Bool
 pointInTriangle point (a, b, c) =
