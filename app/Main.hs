@@ -2,10 +2,13 @@ module Main (main) where
 
 import PolygonGenerator
 import System.Random (mkStdGen)
+import Types
 
 main :: IO ()
 main = do
     let generator = mkStdGen 42
-        (points, _) = generateUniquePoints 10 (0, 1) generator
+        (tooManyPoints, _) = generatePolygon Convex 10 (0, 1) generator
+        (invalidNonConvex, _) = generatePolygon NonConvex 3 (0, 100) generator
 
-    print points
+    print tooManyPoints
+    print invalidNonConvex

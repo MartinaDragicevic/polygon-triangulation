@@ -59,11 +59,27 @@ generateSimplePolygon count range gen =
     in (orderPoints points, nextGen)
 
 generatePolygon :: PolygonType -> Int -> (Int, Int) -> StdGen -> (Polygon, StdGen)
-generatePolygon polygonType count range gen =
-    let (polygon, nextGen) = generateSimplePolygon count range gen
-    in if isSimplePolygon polygon && matchesType polygonType polygon
-        then (polygon, nextGen)
-        else generatePolygon polygonType count range nextGen
+generatePolygon polygonType count range gen
+    | not (validRequest polygonType count range) = ([], gen)
+    | otherwise = tryGenerate 1000 gen
+  where
+    tryGenerate 0 currentGen = ([], currentGen)
+    tryGenerate attempts currentGen =
+        let (polygon, nextGen) = generateSimplePolygon count range currentGen
+        in if isSimplePolygon polygon && matchesType polygonType polygon
+            then (polygon, nextGen)
+            else tryGenerate (attempts - 1) nextGen
+
+validRequest :: PolygonType -> Int -> (Int, Int) -> Bool
+validRequest polygonType count (minValue, maxValue)
+    | count < 3 = False
+    | polygonType == NonConvex && count < 4 = False
+    | minValue > maxValue = False
+    | count > availablePoints = False
+    | otherwise = True
+  where
+    sideLength = maxValue - minValue + 1
+    availablePoints = sideLength * sideLength
 
 matchesType :: PolygonType -> Polygon -> Bool
 matchesType Convex = isConvex
