@@ -63,6 +63,7 @@ generatePolygon polygonType count range gen
     | not (validRequest polygonType count range) = ([], gen)
     | otherwise = tryGenerate 1000 gen
   where
+    tryGenerate :: Int -> StdGen -> (Polygon, StdGen)
     tryGenerate 0 currentGen = ([], currentGen)
     tryGenerate attempts currentGen =
         let (polygon, nextGen) = generateSimplePolygon count range currentGen
