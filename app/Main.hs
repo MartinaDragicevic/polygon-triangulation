@@ -1,22 +1,32 @@
 module Main (main) where
 
-import PolygonGenerator
+import Geometry (isConvex, isSimplePolygon)
+import PolygonGenerator (generatePolygon)
 import System.Random (mkStdGen)
-import Triangulation
-import Types
+import Triangulation (triangulatePolygon)
+import Types (PolygonType(..))
 
 main :: IO ()
 main = do
-    let polygon = [Point 0 0, Point 4 0, Point 4 4, Point 2 2, Point 0 4]
-        clockwisePolygon = reverse polygon
-        generator = mkStdGen 42
-        (tooManyPoints, _) = generatePolygon Convex 10 (0, 1) generator
-        (invalidNonConvex, _) = generatePolygon NonConvex 3 (0, 100) generator
+    let convexGen = mkStdGen 42
+        nonConvexGen = mkStdGen 100
 
+        (convexPolygon, _) =
+            generatePolygon Convex 6 (0, 100) convexGen
+
+        (nonConvexPolygon, _) =
+            generatePolygon NonConvex 6 (0, 100) nonConvexGen
+
+    putStrLn "=== Convex polygon ==="
+    print convexPolygon
+    putStrLn ("Simple: " ++ show (isSimplePolygon convexPolygon))
+    putStrLn ("Convex: " ++ show (isConvex convexPolygon))
     putStrLn "Triangulation:"
-    print (triangulatePolygon polygon)
-    print (triangulatePolygon clockwisePolygon)
+    print (triangulatePolygon convexPolygon)
 
-    putStrLn "Invalid generation requests:"
-    print tooManyPoints
-    print invalidNonConvex
+    putStrLn "\n=== Non-convex polygon ==="
+    print nonConvexPolygon
+    putStrLn ("Simple: " ++ show (isSimplePolygon nonConvexPolygon))
+    putStrLn ("Convex: " ++ show (isConvex nonConvexPolygon))
+    putStrLn "Triangulation:"
+    print (triangulatePolygon nonConvexPolygon)
