@@ -23,7 +23,7 @@ name:               polygon-triangulation
 version:            0.1.0.0
 
 -- A short (one-line) description of the package.
--- synopsis:
+-- synopsis:           Random polygon generation and triangulation in Haskell
 
 -- A longer description of the package.
 -- description:
@@ -32,7 +32,7 @@ version:            0.1.0.0
 license:            NONE
 
 -- The package author(s).
-author:             Martina Dragicevic
+author:             Martina Dragicevic, Petar Milanovic
 
 -- An email address to which users can send suggestions, bug reports, and patches.
 maintainer:         m.dragicevicc44@gmail.com
@@ -42,7 +42,9 @@ maintainer:         m.dragicevicc44@gmail.com
 build-type:         Simple
 
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
-extra-doc-files:    CHANGELOG.md
+extra-doc-files:
+    README.md
+    CHANGELOG.md
 
 -- Extra source files to be distributed with the package, such as examples, or a tutorial module.
 -- extra-source-files:
