@@ -65,6 +65,7 @@ executable polygon-triangulation
         PolygonGenerator
         Triangulation
         Geometry
+        Visualization
 
 
     -- LANGUAGE extensions used by modules in this package.

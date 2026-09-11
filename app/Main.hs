@@ -5,6 +5,7 @@ import PolygonGenerator (generatePolygon)
 import System.Random (mkStdGen, newStdGen)
 import Triangulation (triangulatePolygon)
 import Types (Polygon, PolygonType(..))
+import Visualization (savePolygonSVG)
 
 main :: IO ()
 main = do
@@ -26,6 +27,11 @@ main = do
     putStrLn "\n=== Random examples ==="
     printPolygonResult "Random convex polygon" randomConvex
     printPolygonResult "Random non-convex polygon" randomNonConvex
+
+    savePolygonSVG "fixed-convex.svg" fixedConvex (triangulatePolygon fixedConvex)
+    savePolygonSVG "fixed-nonconvex.svg" fixedNonConvex (triangulatePolygon fixedNonConvex)
+    savePolygonSVG "random-convex.svg" randomConvex (triangulatePolygon randomConvex)
+    savePolygonSVG "random-nonconvex.svg" randomNonConvex (triangulatePolygon randomNonConvex)
 
 printPolygonResult :: String -> Polygon -> IO ()
 printPolygonResult title polygon = do
